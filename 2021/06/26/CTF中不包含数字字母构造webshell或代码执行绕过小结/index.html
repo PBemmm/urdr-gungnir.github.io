@@ -503,7 +503,7 @@
 <pre class="line-numbers language-none"><code class="language-none">&#39;&gt;&#39; &gt; &#39;&lt;&#39; &#x3D;&#x3D; 1
 &#x2F;&#x2F;大于号 大于 小于号 是正确的，所以结果为true，也就是1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<p><img src="/CTF%E4%B8%AD%E4%B8%8D%E5%8C%85%E5%90%AB%E6%95%B0%E5%AD%97%E5%AD%97%E6%AF%8D%E6%9E%84%E9%80%A0webshell%E6%88%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87%E5%B0%8F%E7%BB%93/%7B59F7B6BC-A953-4B9D-A2E2-E2373BECE0E8%7D.png" alt="{59F7B6BC-A953-4B9D-A2E2-E2373BECE0E8}"></p>
+<p><img src="/img/CTF%E4%B8%AD%E4%B8%8D%E5%8C%85%E5%90%AB%E6%95%B0%E5%AD%97%E5%AD%97%E6%AF%8D%E6%9E%84%E9%80%A0webshell%E6%88%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87%E5%B0%8F%E7%BB%93/%7B59F7B6BC-A953-4B9D-A2E2-E2373BECE0E8%7D.png" alt="{59F7B6BC-A953-4B9D-A2E2-E2373BECE0E8}"></p>
 <blockquote>
 <p>所以，我们即使没有数字，我们也可以通过非数字、字母构造出数字</p>
 </blockquote>
@@ -519,16 +519,16 @@
 <p>对于字母来说，也有很多姿势</p>
 <p>比如<strong>异或</strong>或者<strong>取反</strong>这种位运算是用的很多的，还可以通过php的语言特性</p>
 <p><strong>字符串和数组强制连接</strong>的话，就会返回array这个字符串，再通过++–可以得到所有字母。</p>
-<p><img src="/CTF%E4%B8%AD%E4%B8%8D%E5%8C%85%E5%90%AB%E6%95%B0%E5%AD%97%E5%AD%97%E6%AF%8D%E6%9E%84%E9%80%A0webshell%E6%88%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87%E5%B0%8F%E7%BB%93/%7B4407BC11-AD5D-4D8D-89EB-DFB66A6BE262%7D.png" alt="{4407BC11-AD5D-4D8D-89EB-DFB66A6BE262}"></p>
+<p><img src="/img/CTF%E4%B8%AD%E4%B8%8D%E5%8C%85%E5%90%AB%E6%95%B0%E5%AD%97%E5%AD%97%E6%AF%8D%E6%9E%84%E9%80%A0webshell%E6%88%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87%E5%B0%8F%E7%BB%93/%7B4407BC11-AD5D-4D8D-89EB-DFB66A6BE262%7D.png" alt="{4407BC11-AD5D-4D8D-89EB-DFB66A6BE262}"></p>
 <p>**&#x3D;&#x3D;异或^&#x3D;&#x3D;**（可操作性很大，有很多姿势）：</p>
 <p>可以字母、数字、非字母数字之间自由异或</p>
 <blockquote>
 <p>当两个字符异或时，异或出来的字符，反过来与两个字符其中一个字符异或，结果是两个字符中另一个(因为异或完存在很多不可见字符，所以用urlencode编码)</p>
 </blockquote>
-<p><img src="/CTF%E4%B8%AD%E4%B8%8D%E5%8C%85%E5%90%AB%E6%95%B0%E5%AD%97%E5%AD%97%E6%AF%8D%E6%9E%84%E9%80%A0webshell%E6%88%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87%E5%B0%8F%E7%BB%93/%7BF9CE7FB2-590C-493D-B77B-28221331E69A%7D.png" alt="{F9CE7FB2-590C-493D-B77B-28221331E69A}"></p>
+<p><img src="/img/CTF%E4%B8%AD%E4%B8%8D%E5%8C%85%E5%90%AB%E6%95%B0%E5%AD%97%E5%AD%97%E6%AF%8D%E6%9E%84%E9%80%A0webshell%E6%88%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87%E5%B0%8F%E7%BB%93/%7BF9CE7FB2-590C-493D-B77B-28221331E69A%7D.png" alt="{F9CE7FB2-590C-493D-B77B-28221331E69A}"></p>
 <p>**&#x3D;&#x3D;取反~&#x3D;&#x3D;**（可操作性大，有很多姿势）</p>
 <p>可以中文字符取反，UTF-8编码的某个汉字，并将其中某个字符取出来，比如’和’{2}的结果是”\x8c”，其取反即为字母s</p>
-<p><img src="/CTF%E4%B8%AD%E4%B8%8D%E5%8C%85%E5%90%AB%E6%95%B0%E5%AD%97%E5%AD%97%E6%AF%8D%E6%9E%84%E9%80%A0webshell%E6%88%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87%E5%B0%8F%E7%BB%93/%7BEBABD934-6A7D-4282-830A-C937525A3FE9%7D.png"></p>
+<p><img src="/img/CTF%E4%B8%AD%E4%B8%8D%E5%8C%85%E5%90%AB%E6%95%B0%E5%AD%97%E5%AD%97%E6%AF%8D%E6%9E%84%E9%80%A0webshell%E6%88%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87%E5%B0%8F%E7%BB%93/%7BEBABD934-6A7D-4282-830A-C937525A3FE9%7D.png"></p>
 <p>也可以&#x3D;&#x3D;<strong>直接对字符串取反</strong>&#x3D;&#x3D;，这样得到的并不是字母，而是一些其他字符（多为不可见字符），也是一种绕过的方式。</p>
 <hr>
 <p>上面那些是拿到目标字符串的方法，而要构造webshell，灵活的将上面的方法交叉运用，及利用php5，php7的执行代码的方式，进行字符串拼接，来构造webshell</p>
@@ -816,7 +816,7 @@ cmd&#x3D;$_GET[1]($_GET[2]);<span aria-hidden="true" class="line-numbers-rows"><
 <pre class="line-numbers language-none"><code class="language-none">(sy.st.em)(whoami);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h6 id="内置函数访问绕过"><a href="#内置函数访问绕过" class="headerlink" title="内置函数访问绕过"></a>内置函数访问绕过</h6><p><code>get_defined_functions()</code>函数：返回所有已定义的函数的数组</p>
-<p>利用这种方法首先还需要知道PHP的具体版本，因为每个版本的<code>get_defined_functions()</code>返回的值都是不一样的，这里以<code>php7.3.4</code>为准 <img src="/CTF%E4%B8%AD%E4%B8%8D%E5%8C%85%E5%90%AB%E6%95%B0%E5%AD%97%E5%AD%97%E6%AF%8D%E6%9E%84%E9%80%A0webshell%E6%88%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87%E5%B0%8F%E7%BB%93/%7B979DEA4A-734A-413C-9025-BE8E1A503111%7D.png" alt="{979DEA4A-734A-413C-9025-BE8E1A503111}"></p>
+<p>利用这种方法首先还需要知道PHP的具体版本，因为每个版本的<code>get_defined_functions()</code>返回的值都是不一样的，这里以<code>php7.3.4</code>为准 <img src="/img/CTF%E4%B8%AD%E4%B8%8D%E5%8C%85%E5%90%AB%E6%95%B0%E5%AD%97%E5%AD%97%E6%AF%8D%E6%9E%84%E9%80%A0webshell%E6%88%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87%E5%B0%8F%E7%BB%93/%7B979DEA4A-734A-413C-9025-BE8E1A503111%7D.png" alt="{979DEA4A-734A-413C-9025-BE8E1A503111}"></p>
 <h6 id="字符串拼接绕过"><a href="#字符串拼接绕过" class="headerlink" title="字符串拼接绕过"></a>字符串拼接绕过</h6><p>字符串拼接绕过适用于绕过<font color="red">过滤具体关键字</font>的限制</p>
 <pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 <span class="token function">highlight_file</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">)</span><span class="token punctuation">;</span>

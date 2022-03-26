@@ -511,7 +511,7 @@
 <li>Client从Registry获得远程对象的代理（这个代理知道远程对象的在网络中的具体位置：ip、端口、标识符），然后Client通过这个代理调用远程方法，Server也是有一个代理的，Server端的代理会收到Client端的调用的方法、参数等，然后代理执行对应方法，并将结果通过网络返回给Client。</li>
 </ol>
 <p>流程图：</p>
-<p><img src="/java%E5%9F%BA%E7%A1%80-rmi/Snipaste_2022-03-08_10-40-16.png" alt="Snipaste_2022-03-08_10-40-16"></p>
+<p><img src="/img/java%E5%9F%BA%E7%A1%80-rmi/Snipaste_2022-03-08_10-40-16.png" alt="Snipaste_2022-03-08_10-40-16"></p>
 <h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>首先我们编写一个RMI Server</p>
 <p>RMI Server需要三个部分</p>
 <ul>

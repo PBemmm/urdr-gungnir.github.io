@@ -497,11 +497,11 @@
 <p>在Java中除了以常规方式使用名称服务(比如使用 DNS 解析域名)，另一个常见的用法是使用目录服务作为对象存储的系统，即用目录服务来存储和获取 Java 对象。</p>
 <p>于是就有了Jndi，作为名称和目录服务的接口，应用通过该接口与具体的目录服务进行交互从设计上，JNDI 独立于具体的目录服务实现，因此可以针对不同的目录服务提供统一的操作接口。</p>
 <p>JNDI 架构上主要包含两个部分，即 Java 的应用层接口和 SPI，如下图所示:</p>
-<p><img src="/java%E5%AE%89%E5%85%A8-jndi%E6%B3%A8%E5%85%A5/Snipaste_2022-03-08_21-48-03.png" alt="Snipaste_2022-03-08_21-48-02"></p>
+<p><img src="/img/java%E5%AE%89%E5%85%A8-jndi%E6%B3%A8%E5%85%A5/Snipaste_2022-03-08_21-48-03.png" alt="Snipaste_2022-03-08_21-48-02"></p>
 <p>这么多概念，其实只要理解<strong>jndi是对各种访问目录服务的逻辑进行了再封装</strong>就可以了。</p>
 <p>有了jndi，我们可以不用写很多底层代码去操控不同的命名或目录服务。</p>
 <p>除了RMI，LDAP和CORBA都是目录服务。（RMI是java特有的，其他两个是通用的服务和标准，可以脱离java使用）</p>
-<p><img src="/java%E5%AE%89%E5%85%A8-jndi%E6%B3%A8%E5%85%A5/Snipaste_2022-03-08_21-53-19.png" alt="Snipaste_2022-03-08_21-53-19"></p>
+<p><img src="/img/java%E5%AE%89%E5%85%A8-jndi%E6%B3%A8%E5%85%A5/Snipaste_2022-03-08_21-53-19.png" alt="Snipaste_2022-03-08_21-53-19"></p>
 <p>应用不需要直接接触底层的命名或目录服务，而是通过jndi去访问。</p>
 <h2 id="0X01-jndi-服务代码实现"><a href="#0X01-jndi-服务代码实现" class="headerlink" title="0X01 jndi 服务代码实现"></a>0X01 jndi 服务代码实现</h2><p>jndi可以访问DNS服务，但是与jndi注入关系不大，在此我就不提了。</p>
 <p>而我想说的是RMI的远程调用、LDAP连接。</p>
@@ -830,12 +830,12 @@ registry.bind(&quot;refObj&quot;, refObjWrapper);<span aria-hidden="true" class=
 <pre class="line-numbers language-none"><code class="language-none">python -m SimpleHTTPServer 6666<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>执行上述命令就会在6666端口、当前目录下运行一个HTTP Server：</p>
-<p><img src="/java%E5%AE%89%E5%85%A8-jndi%E6%B3%A8%E5%85%A5/Snipaste_2022-03-14_17-09-16.png" alt="Snipaste_2022-03-14_17-09-16"></p>
+<p><img src="/img/java%E5%AE%89%E5%85%A8-jndi%E6%B3%A8%E5%85%A5/Snipaste_2022-03-14_17-09-16.png" alt="Snipaste_2022-03-14_17-09-16"></p>
 <p>然后运行Server端，启动rmi registry服务</p>
 <p>最后运行客户端(受害者)：</p>
-<p><img src="/java%E5%AE%89%E5%85%A8-jndi%E6%B3%A8%E5%85%A5/Snipaste_2022-03-14_17-13-10.png" alt="Snipaste_2022-03-14_17-13-10"></p>
+<p><img src="/img/java%E5%AE%89%E5%85%A8-jndi%E6%B3%A8%E5%85%A5/Snipaste_2022-03-14_17-13-10.png" alt="Snipaste_2022-03-14_17-13-10"></p>
 <p>成功弹出计算器。注意,我这里用到的jdk版本为jdk1.7.0_80，下面是rmi动态调用的一个流程</p>
-<p><img src="/java%E5%AE%89%E5%85%A8-jndi%E6%B3%A8%E5%85%A5/rmi_codebase.png" alt="rmi_codebase"></p>
+<p><img src="/img/java%E5%AE%89%E5%85%A8-jndi%E6%B3%A8%E5%85%A5/rmi_codebase.png" alt="rmi_codebase"></p>
 <p>参考链接:</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/Maskhe/javasec/blob/master/8.jndi%E6%B3%A8%E5%85%A5.md">https://github.com/Maskhe/javasec/blob/master/8.jndi%E6%B3%A8%E5%85%A5.md</a></li>

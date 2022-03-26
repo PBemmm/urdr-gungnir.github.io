@@ -508,7 +508,7 @@
 </blockquote>
 </li>
 </ol>
-<p>![1 (1)](序列化（三）原生类反序列化&#x2F;1 (1).png)</p>
+<p>![1 (1)](&#x2F;img&#x2F;序列化（三）原生类反序列化&#x2F;1 (1).png)</p>
 <p>在其中最重要的就是<strong>SoapClient</strong>类，因为他又**__call**魔术方法。</p>
 <pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token keyword">public</span> <span class="token class-name static-context">SoapClient</span> <span class="token operator">::</span> <span class="token constant">SoapClient</span> （<span class="token keyword type-declaration">mixed</span> <span class="token variable">$wsdl</span> <span class="token punctuation">[</span>，<span class="token keyword type-declaration">array</span> <span class="token variable">$options</span> <span class="token punctuation">]</span>）<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -570,7 +570,7 @@
 only localhost can get flag<span class="token operator">!</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>首先我们可以想到利用传入$_GET[‘f’]为extract来进行变量覆盖，将b覆盖为我们想要的函数，比如var_duamp或者print_r，此时我们可以看到$_SESSION中是没有东西的。</p>
-<p><img src="/%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%88%E4%B8%89%EF%BC%89%E5%8E%9F%E7%94%9F%E7%B1%BB%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/4.png" alt="4"></p>
+<p><img src="/img/%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%88%E4%B8%89%EF%BC%89%E5%8E%9F%E7%94%9F%E7%B1%BB%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/4.png" alt="4"></p>
 <p>于是我们想通过<strong>ini_set</strong>()函数来构造<strong>ini_set(‘session.serialize_handler’, ‘php_serialize’);<strong>来改变序列化时的处理器，从而使其和反序列化时处理引擎不同，但是$_POST中需要设置参数传输； 所以用session_start([‘serialize_handler’&#x3D;&gt;’php_serialize’])，即POST传入</strong>serialize_handler&#x3D;php_serialize</strong>来改变处理器，因为session_start()中如果提供参数，那么会用其中的项目覆盖 <a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/session.configuration.php">会话配置指示</a> 中的配置项。</p>
 <p>利用上面的构造</p>
 <pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
@@ -583,12 +583,12 @@ only localhost can get flag<span class="token operator">!</span><span aria-hidde
 
 <pre class="line-numbers language-none"><code class="language-none">O%3A10%3A%22SoapClient%22%3A5%3A%7Bs%3A3%3A%22uri%22%3Bs%3A3%3A%22123%22%3Bs%3A8%3A%22location%22%3Bs%3A25%3A%22http%3A%2F%2F127.0.0.1%2Fflag.php%22%3Bs%3A15%3A%22_stream_context%22%3Bi%3A0%3Bs%3A11%3A%22_user_agent%22%3Bs%3A52%3A%22btis%0D%0ACookie%3A+PHPSESSID%3Dctrmmddufre6nph5908ajosbo7%0D%0A%22%3Bs%3A13%3A%22_soap_version%22%3Bi%3A1%3B%7D<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p><img src="E:\Github-blog\blog\source_posts\序列化（三）原生类反序列化\5.png" alt="5"></p>
+<p><img src="/img/%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%88%E4%B8%89%EF%BC%89%E5%8E%9F%E7%94%9F%E7%B1%BB%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/5.png" alt="5"></p>
 <p>利用php_serialize序列化传入后，并用php反序列化处理后此时session中包含了：一个键名**a:1:{s:4:”name”;s:222:”**，和一个SoapClient对象</p>
 <p>下面我们用<code>extract()</code>将b覆盖成<code>call_user_func()</code>，<code>reset($_SESSION)</code>就是<code>$_SESSION[&#39;name&#39;]</code>，所以我们传入<code>name=SoapClient</code></p>
 <p>最后的<code>call_user_func($b, $a)</code>就变成了<code>call_user_func(array(&#39;SoapClient&#39;,&#39;welcome_to_the_lctf2018&#39;))</code>,即<code>call_user_func(SoapClient-&gt;welcome_to_the_lctf2018)</code></p>
 <p>因为<code>SoapClient</code>对象中没有<code>welcome_to_the_lctf2018</code>这个方法，就会调用魔术方法<code>__call()</code>从而发送请求。</p>
-<p><img src="/%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%88%E4%B8%89%EF%BC%89%E5%8E%9F%E7%94%9F%E7%B1%BB%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/6.png" alt="6"></p>
+<p><img src="/img/%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%88%E4%B8%89%EF%BC%89%E5%8E%9F%E7%94%9F%E7%B1%BB%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/6.png" alt="6"></p>
 <p>因为满足了flag.php中的要求所以flag被写入到$_SESSION中，所以我们携带刚才指定的cookie访问页面即可得到flag。<img src="/%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%88%E4%B8%89%EF%BC%89%E5%8E%9F%E7%94%9F%E7%B1%BB%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/7.png" alt="7"></p>
 <h1 id="Error-x2F-Exception"><a href="#Error-x2F-Exception" class="headerlink" title="Error&#x2F;Exception"></a>Error&#x2F;Exception</h1><p>Error&#x2F;Exception会和xss结合</p>
 <p>因为SoapClient是与http结合,而<strong>Error&#x2F;Exception</strong>类内置有**__tostring**方法</p>

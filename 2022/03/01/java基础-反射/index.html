@@ -540,7 +540,7 @@ Method method &#x3D; clazz.getMethod(&quot;setId&quot;,Integer.class);<span aria
 
 <h3 id="3-调用setId-方法"><a href="#3-调用setId-方法" class="headerlink" title="3.调用setId()方法"></a>3.调用setId()方法</h3><p>调用方法用的是invoke()</p>
 <p>这个方法有两个参数</p>
-<img src="java基础-反射/Snipaste_2022-03-03_13-55-10.png" alt="Snipaste_2022-03-03_13-55-10" style="zoom:50%;" />
+<img src="/img/java基础-反射/Snipaste_2022-03-03_13-55-10.png" alt="Snipaste_2022-03-03_13-55-10" style="zoom:50%;" />
 
 <p>第一个参数是可以两种类型的</p>
 <ul>
@@ -554,11 +554,11 @@ method.invoke(test,1)<span aria-hidden="true" class="line-numbers-rows"><span></
 
 
 <p>结合起来我们的流程就是</p>
-<img src="java基础-反射/Snipaste_2022-03-03_14-03-14.png" alt="Snipaste_2022-03-03_14-03-14" style="zoom:50%;" />
+<img src="/img/java基础-反射/Snipaste_2022-03-03_14-03-14.png" alt="Snipaste_2022-03-03_14-03-14" style="zoom:50%;" />
 
 
 
-<img src="java基础-反射/Snipaste_2022-03-03_14-03-01.png" alt="Snipaste_2022-03-03_14-03-01" style="zoom: 50%;" />
+<img src="/img/java基础-反射/Snipaste_2022-03-03_14-03-01.png" alt="Snipaste_2022-03-03_14-03-01" style="zoom: 50%;" />
 
 <p>test里面是定义的类，test2里是利用反射注入了id。</p>
 <p>可以看到我们成功注入了1，输出的就是1.</p>
@@ -567,7 +567,7 @@ method.invoke(test,1)<span aria-hidden="true" class="line-numbers-rows"><span></
 <pre class="line-numbers language-none"><code class="language-none">Class clazz &#x3D; Class.forName(&quot;java.lang.Runtime&quot;);
 clazz.getMethod(&quot;exec&quot;, String.class).invoke(clazz.newInstance(),&quot;calc.exe&quot;);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<img src="java基础-反射/Snipaste_2022-03-03_14-18-16.png" alt="Snipaste_2022-03-03_14-18-16" style="zoom:50%;" />
+<img src="/img/java基础-反射/Snipaste_2022-03-03_14-18-16.png" alt="Snipaste_2022-03-03_14-18-16" style="zoom:50%;" />
 
 <p>因为Runtime的构造方法是私有的。</p>
 <blockquote>
@@ -585,7 +585,7 @@ clazz.getMethod(&quot;exec&quot;, String.class).invoke(clazz.newInstance(),&quot
 <pre class="line-numbers language-none"><code class="language-none">Class clazz &#x3D; Class.forName(&quot;java.lang.Runtime&quot;);
 clazz.getMethod(&quot;exec&quot;, String.class).invoke(clazz.getMethod(&quot;getRuntime&quot;).invoke(clazz),&quot;calc.exe&quot;);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<p><img src="/java%E5%9F%BA%E7%A1%80-%E5%8F%8D%E5%B0%84/Snipaste_2022-03-03_14-28-23.png" alt="Snipaste_2022-03-03_14-28-23"></p>
+<p><img src="/img/java%E5%9F%BA%E7%A1%80-%E5%8F%8D%E5%B0%84/Snipaste_2022-03-03_14-28-23.png" alt="Snipaste_2022-03-03_14-28-23"></p>
 <p>成功弹出计算器，执行了命令。</p>
 <h2 id="Java反射机制总结"><a href="#Java反射机制总结" class="headerlink" title="Java反射机制总结"></a>Java反射机制总结</h2><p>Java反射机制是Java动态性中最为重要的体现，利用反射机制我们可以轻松的实现Java类的动态调用。Java的大部分框架都是采用了反射机制来实现的(如:<code>Spring MVC</code>、<code>ORM框架</code>等)，Java反射在编写漏洞利用代码、代码审计、绕过RASP方法限制等中起到了至关重要的作用。</p>
 

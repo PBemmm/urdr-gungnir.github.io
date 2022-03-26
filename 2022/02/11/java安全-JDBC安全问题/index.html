@@ -542,7 +542,7 @@ ps<span class="token punctuation">.</span><span class="token function">execute</
 <p>我用的是8.0.19，如果你用的版本不能顺利分析下来，可能版本不在影响范围之内，换一个版本。</p>
 <p>影响范围（5.1.28 - 5.1.19，5.1.29 - 5.1.40，5.x &lt;&#x3D; 5.1.10，&gt;&#x3D;5.1.11，6.x，8.x）</p>
 </blockquote>
-<p><img src="/java%E5%AE%89%E5%85%A8-JDBC%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/Snipaste_2022-03-05_09-14-03.png" alt="Snipaste_2022-03-05_09-14-03"></p>
+<p><img src="/img/java%E5%AE%89%E5%85%A8-JDBC%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/Snipaste_2022-03-05_09-14-03.png" alt="Snipaste_2022-03-05_09-14-03"></p>
 <h3 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h3><blockquote>
 <p>如果攻击者能够控制JDBC连接设置项，那么就可以通过设置其指向恶意MySQL服务器进行ObjectInputStream.readObject()的反序列化攻击从而RCE。</p>
 <p>具体点说，就是通过JDBC连接MySQL服务端时，会有几个内置的SQL查询语句要执行，其中两个查询的结果集在MySQL客户端被处理时会调用ObjectInputStream.readObject()进行反序列化操作。如果攻击者搭建恶意MySQL服务器来控制这两个查询的结果集，并且攻击者可以控制JDBC连接设置项，那么就能触发MySQL JDBC客户端反序列化漏洞。</p>
@@ -553,15 +553,15 @@ ps<span class="token punctuation">.</span><span class="token function">execute</
 </ul>
 </blockquote>
 <h3 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h3><p>我们可以在IDEA的外部库中找到依赖。</p>
-<img src="java安全-JDBC安全问题/Snipaste_2022-03-05_09-19-41.png" alt="Snipaste_2022-03-05_09-19-41" style="zoom:67%;" />
+<img src="/img/java安全-JDBC安全问题/Snipaste_2022-03-05_09-19-41.png" alt="Snipaste_2022-03-05_09-19-41" style="zoom:67%;" />
 
 <p>如果要是序列化的问题的话，那肯定少不了readObject。</p>
 <p>作者在com.mysql.cj.jdbc.result.ResultSetImpl下的getObject(int columnIndex)函数中找到了readObject。</p>
 <p>一共有两处readObject。</p>
 <p>一处是case BIT，一处是case BLOB。</p>
-<img src="java安全-JDBC安全问题/Snipaste_2022-03-05_09-37-51.png" alt="Snipaste_2022-03-05_09-37-51" style="zoom: 67%;" />
+<img src="/img/java安全-JDBC安全问题/Snipaste_2022-03-05_09-37-51.png" alt="Snipaste_2022-03-05_09-37-51" style="zoom: 67%;" />
 
-<img src="java安全-JDBC安全问题/Snipaste_2022-03-05_09-38-23.png" alt="Snipaste_2022-03-05_09-38-23" style="zoom:67%;" />
+<img src="/img/java安全-JDBC安全问题/Snipaste_2022-03-05_09-38-23.png" alt="Snipaste_2022-03-05_09-38-23" style="zoom:67%;" />
 
 <p>我们需要知道</p>
 <pre class="line-numbers language-none"><code class="language-none">BIT和BLOB都是MySQL里的一种数据格式
@@ -587,17 +587,17 @@ if ((data[0] &#x3D;&#x3D; -84) &amp;&amp; (data[1] &#x3D;&#x3D; -19))
 
 <p>接下来我们就是要找到个调用getobject的地方，我们把目光放在<code>com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor.populateMapWithSessionStatusValues()</code>中的<code>ResultSetUtil.resultSetToMap(toPopulate, rs);</code></p>
 <p>前面原理中提到了两条查询语句，在这里我们就可以看到它执行了其中一句<code>SHOW SESSION STATUS</code></p>
-<img src="java安全-JDBC安全问题/Snipaste_2022-03-05_09-59-00.png" alt="Snipaste_2022-03-05_09-59-00" style="zoom:67%;" />
+<img src="/img/java安全-JDBC安全问题/Snipaste_2022-03-05_09-59-00.png" alt="Snipaste_2022-03-05_09-59-00" style="zoom:67%;" />
 
 <p>执行<code>SHOW SESSION STATUS</code>后并处理其结果时,调用了getObject()，注意这里调用了两次。</p>
-<img src="java安全-JDBC安全问题/Snipaste_2022-03-05_10-03-06.png" alt="Snipaste_2022-03-05_10-03-06" style="zoom:67%;" />
+<img src="/img/java安全-JDBC安全问题/Snipaste_2022-03-05_10-03-06.png" alt="Snipaste_2022-03-05_10-03-06" style="zoom:67%;" />
 
 <p>于是我们要再找调用populateMapWithSessionStatusValues的地方，我们找到了&#96;&#96;com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor<code>的</code>postProcess()<code>和</code>preProcess()<code>方法</code></p>
 <p>那我们怎么调用postProcess或者preProcess呢，这需要我们知道这个类的含义</p>
 <pre class="line-numbers language-none"><code class="language-none">public class ServerStatusDiffInterceptor implements QueryInterceptor<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>此类实现了QueryInterceptor</p>
-<img src="java安全-JDBC安全问题/Snipaste_2022-03-05_10-10-49.png" alt="Snipaste_2022-03-05_10-10-49" style="zoom:60%;" />
+<img src="/img/java安全-JDBC安全问题/Snipaste_2022-03-05_10-10-49.png" alt="Snipaste_2022-03-05_10-10-49" style="zoom:60%;" />
 
 <p>所以<code>ServerStatusDiffInterceptor</code>是一个拦截器，在JDBC URL中设定属性queryInterceptors为<code>ServerStatusDiffInterceptor</code>时，执行查询语句会调用拦截器的preProcess和postProcess方法，进而通过上述调用链最终调用<code>getObject()</code>方法。</p>
 <p>所以最终思路就是，执行查询语句，触发拦截器，执行preProcess，进入到populateMapWithSessionStatusValues，再执行<code>SHOW SESSION STATUS</code>，得到序列化的数据，进入getObject，反序列化。</p>
@@ -795,7 +795,7 @@ response_ok_data<span class="token operator">=</span><span class="token string">
 
 <p>可以看的出来，是判断clazz类是书鱼哪一种Source源，则进入哪一个判断。</p>
 <p>当传入类型为DOMSource时，则使用DocumentBuilder对数据进行解析处理。</p>
-<img src="java安全-JDBC安全问题/Snipaste_2022-03-06_13-18-39.png" alt="Snipaste_2022-03-06_13-18-39" style="zoom:67%;" />
+<img src="/img/java安全-JDBC安全问题/Snipaste_2022-03-06_13-18-39.png" alt="Snipaste_2022-03-06_13-18-39" style="zoom:67%;" />
 
 <p>可以看到，domsource处理逻辑中，没有对inputsource进行一个过滤，这就是说，如果inputsource可控，那么将直接被直接解析xml内容。</p>
 <p>那inputsource是当this.fromResultSet为flase的时候，被this.stringRep控制的。</p>
@@ -803,9 +803,9 @@ response_ok_data<span class="token operator">=</span><span class="token string">
 <p>这里的this.fromResultSet不出意外，基本上是false的状态</p>
 <p>因为在构造函数的时候，就已经被初始化为false。</p>
 </blockquote>
-<p><img src="/java%E5%AE%89%E5%85%A8-JDBC%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/Snipaste_2022-03-06_13-29-05.png" alt="Snipaste_2022-03-06_13-29-05"></p>
+<p><img src="/img/java%E5%AE%89%E5%85%A8-JDBC%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/Snipaste_2022-03-06_13-29-05.png" alt="Snipaste_2022-03-06_13-29-05"></p>
 <p>而this.stringRep可以通过当前类的<code>setString</code>方法类设置<code>stringRep</code>的值。</p>
-<img src="java安全-JDBC安全问题/Snipaste_2022-03-06_13-27-28.png" alt="Snipaste_2022-03-06_13-27-28" style="zoom:67%;" />
+<img src="/img/java安全-JDBC安全问题/Snipaste_2022-03-06_13-27-28.png" alt="Snipaste_2022-03-06_13-27-28" style="zoom:67%;" />
 
 <p>那我们如何触发它呢？</p>
 <p><code>createSQLXML</code>方法的作用就是返回一个<code>MysqlSQLXML</code>对象。</p>
@@ -853,7 +853,7 @@ response_ok_data<span class="token operator">=</span><span class="token string">
 <p>那么我们就需要先把恶意的payload写入数据库中，让程序getSQLXML拿出来，再解析。</p>
 <p>所以这也是为什么很鸡肋的一个原因。</p>
 <p>让我想起来一个图。</p>
-<img src="java安全-JDBC安全问题/QQ图片20220306134927.jpg" alt="QQ图片20220306134927" style="zoom:33%;" />
+<img src="/img/java安全-JDBC安全问题/QQ图片20220306134927.jpg" alt="QQ图片20220306134927" style="zoom:33%;" />
 
 <p>虽然不是完全一样，但是这种思路也是如出一辙。。。。</p>
 <h3 id="漏洞利用-1"><a href="#漏洞利用-1" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p>虽然很鸡肋，但是我也稍微复现，让大家理解。</p>
@@ -870,10 +870,10 @@ response_ok_data<span class="token operator">=</span><span class="token string">
 
 <p>起一个临时web服务，方便验证是否成功。</p>
 <p>然后调用项目中的<strong>OracleJDBC.java</strong>，你可以看到此文件中的代码就是上面提供的常见写法。</p>
-<img src="java安全-JDBC安全问题/Snipaste_2022-03-06_13-55-31.png" alt="Snipaste_2022-03-06_13-55-31" style="zoom:50%;" />
+<img src="/img/java安全-JDBC安全问题/Snipaste_2022-03-06_13-55-31.png" alt="Snipaste_2022-03-06_13-55-31" style="zoom:50%;" />
 
 <p>然后你就可以看到，你已经成功收到了来自目标服务器的请求。</p>
-<p><img src="/java%E5%AE%89%E5%85%A8-JDBC%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/Snipaste_2022-03-06_13-56-40.png" alt="Snipaste_2022-03-06_13-56-40"></p>
+<p><img src="/img/java%E5%AE%89%E5%85%A8-JDBC%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/Snipaste_2022-03-06_13-56-40.png" alt="Snipaste_2022-03-06_13-56-40"></p>
 <p>如果你想进行其他的利用，修改插入数据库的payload即可。</p>
 <h3 id="防御方案-1"><a href="#防御方案-1" class="headerlink" title="防御方案"></a>防御方案</h3><p>官方在更新中创建了<code>XmlReader</code>并进行了安全设置。</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">try</span> <span class="token punctuation">&#123;</span>

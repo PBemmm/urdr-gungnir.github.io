@@ -492,24 +492,24 @@
 <p>可以在题目附件中找到web-0.0.1-SNAPSHOT.jar包。</p>
 <h4 id="代码审计"><a href="#代码审计" class="headerlink" title="代码审计"></a>代码审计</h4><p>给了web-0.0.1-SNAPSHOT.jar包，用jd-gui把jar包反编译</p>
 <p>可以看到主要的代码都在gdufs.challenge.web下面。</p>
-<img src="CTF中的java题/Snipaste_2022-03-04_15-40-35.png" alt="Snipaste_2022-03-04_15-40-35" style="zoom: 67%;" />
+<img src="/img/CTF中的java题/Snipaste_2022-03-04_15-40-35.png" alt="Snipaste_2022-03-04_15-40-35" style="zoom: 67%;" />
 
 
 
 <p>可以看到主入口文件，gdufs.challenge.web.controller.MainController下有个敏感的函数deserialize，它调用了readObject。</p>
-<img src="CTF中的java题/Snipaste_2022-03-04_15-47-30.png" alt="Snipaste_2022-03-04_15-47-30" style="zoom:67%;" />
+<img src="/img/CTF中的java题/Snipaste_2022-03-04_15-47-30.png" alt="Snipaste_2022-03-04_15-47-30" style="zoom:67%;" />
 
 <p>在同一文件下，hello函数调用了deserialize，而跟进参数cookieData，也是可控的。</p>
-<img src="CTF中的java题/Snipaste_2022-03-04_15-48-38.png" alt="Snipaste_2022-03-04_15-48-38" style="zoom:67%;" />
+<img src="/img/CTF中的java题/Snipaste_2022-03-04_15-48-38.png" alt="Snipaste_2022-03-04_15-48-38" style="zoom:67%;" />
 
 
 
-<img src="CTF中的java题/Snipaste_2022-03-04_15-50-18.png" alt="Snipaste_2022-03-04_15-50-18" style="zoom:67%;" />
+<img src="/img/CTF中的java题/Snipaste_2022-03-04_15-50-18.png" alt="Snipaste_2022-03-04_15-50-18" style="zoom:67%;" />
 
 <p>cookieData就是cookie中参数名为data后跟的值。</p>
 <p>那我们可以找个链子看看能不能打。</p>
 <p>lib中找到了commons-collections-3.2.1.jar，拿cc5打，但是没反应。</p>
-<p><img src="/CTF%E4%B8%AD%E7%9A%84java%E9%A2%98/Snipaste_2022-03-04_16-40-13.png" alt="Snipaste_2022-03-04_16-40-13"></p>
+<p><img src="/img/CTF%E4%B8%AD%E7%9A%84java%E9%A2%98/Snipaste_2022-03-04_16-40-13.png" alt="Snipaste_2022-03-04_16-40-13"></p>
 <h4 id="白名单限制-SerialKiller"><a href="#白名单限制-SerialKiller" class="headerlink" title="白名单限制(SerialKiller)"></a>白名单限制(SerialKiller)</h4><p>在pom.xml和<code>deserialize</code>函数中<code>readObject</code>前的new SerialKiller(bais, “serialkiller.conf”);上看到了serialKiller。</p>
 <p>了解了一下，原来这个serialkiller是白名单限制java反序列化攻击的，跟JEP290差不多。</p>
 <p>有个<code>serialkiller.conf</code>文件</p>
@@ -529,11 +529,11 @@
 <p><strong>代理对象在执行被代理对象的任何方法前都会执行重写的<code>invoke</code>方法</strong></p>
 </blockquote>
 <p>所以我们给this.info赋值DatabaseInfo，让后面能调用checkAllInfo。</p>
-<img src="CTF中的java题/Snipaste_2022-03-04_17-03-37.png" alt="Snipaste_2022-03-04_17-03-37" style="zoom:67%;" />
+<img src="/img/CTF中的java题/Snipaste_2022-03-04_17-03-37.png" alt="Snipaste_2022-03-04_17-03-37" style="zoom:67%;" />
 
 <p>来到<code>checkAllInfo</code>，设置相关参数为恶意Mysql地址，调用<code>this.connect</code></p>
 <p>然后触发JDBC反序列化。</p>
-<img src="CTF中的java题/Snipaste_2022-03-04_17-09-26.png" alt="Snipaste_2022-03-04_17-09-26" style="zoom:67%;" />
+<img src="/img/CTF中的java题/Snipaste_2022-03-04_17-09-26.png" alt="Snipaste_2022-03-04_17-09-26" style="zoom:67%;" />
 
 <pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F;Exp.java
 &#x2F;&#x2F;拿的ttpfx师傅的exp。
@@ -577,7 +577,7 @@ public class exp &#123;
 <p>serialkiller给的jar包中为4.0的版本，但是maven在找依赖的时候找不到，我看了看只有0.4的依赖，所以可以改成0.4版本的。</p>
 </blockquote>
 <p>项目目录：</p>
-<p><img src="/CTF%E4%B8%AD%E7%9A%84java%E9%A2%98/Snipaste_2022-03-04_19-28-19.png" alt="Snipaste_2022-03-04_19-28-19"></p>
+<p><img src="/img/CTF%E4%B8%AD%E7%9A%84java%E9%A2%98/Snipaste_2022-03-04_19-28-19.png" alt="Snipaste_2022-03-04_19-28-19"></p>
 <p>然后搭建个恶意的Mysql服务器</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># coding=utf-8</span>
 <span class="token keyword">import</span> socket
@@ -699,15 +699,15 @@ response_ok_data<span class="token operator">=</span><span class="token string">
 <p>1.cmd和powershell用yso最终生成的payload不一样，一个3k大小，一个5k大小。最终cmd的成功了</p>
 <p>2.恶意mysql服务器不要在本地，不清楚为什么收不到。</p>
 </blockquote>
-<img src="CTF中的java题/Snipaste_2022-03-04_19-39-03.png" alt="Snipaste_2022-03-04_19-39-03" style="zoom:67%;" />
+<img src="/img/CTF中的java题/Snipaste_2022-03-04_19-39-03.png" alt="Snipaste_2022-03-04_19-39-03" style="zoom:67%;" />
 
 
 
-<img src="CTF中的java题/Snipaste_2022-03-04_14-09-03.png" alt="Snipaste_2022-03-04_14-09-03" style="zoom:60%;" />
+<img src="/img/CTF中的java题/Snipaste_2022-03-04_14-09-03.png" alt="Snipaste_2022-03-04_14-09-03" style="zoom:60%;" />
 
 
 
-<img src="CTF中的java题/Snipaste_2022-03-04_14-07-47.png" alt="Snipaste_2022-03-04_14-07-47" style="zoom:67%;" />
+<img src="/img/CTF中的java题/Snipaste_2022-03-04_14-07-47.png" alt="Snipaste_2022-03-04_14-07-47" style="zoom:67%;" />
 
 
                 

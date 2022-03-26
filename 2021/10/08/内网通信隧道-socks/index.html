@@ -521,15 +521,15 @@
 <p>ProxyChains是一款可以在Liunx下进行全局代理的软件，很方便。用就对了。kali自带。</p>
 </blockquote>
 <h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><h3 id="正向代理"><a href="#正向代理" class="headerlink" title="正向代理"></a>正向代理</h3><p>我们控制的目标机器有外网ip，我们只需要在自己的vps上用ew开个socks5代理就可以了。</p>
-<p>在使用ew时候，需要注意，权限要给够。如果权限不给够的话，就会出现<img src="/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_15-32-48.png" alt="Snipaste_2021-10-08_15-32-48"></p>
+<p>在使用ew时候，需要注意，权限要给够。如果权限不给够的话，就会出现<img src="/img/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_15-32-48.png" alt="Snipaste_2021-10-08_15-32-48"></p>
 <p>这边我为了方便，直接chmod 777了。你们看情况。</p>
 <p>然后就可以开始正向代理，ew的正向代理是通过ssocksd</p>
 <blockquote>
 <p>.&#x2F;ew_for_linux64 -s ssocksd -l you-port</p>
 </blockquote>
-<p><img src="/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_15-30-31.png" alt="Snipaste_2021-10-08_15-30-31"></p>
+<p><img src="/img/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_15-30-31.png" alt="Snipaste_2021-10-08_15-30-31"></p>
 <p>我们可以试验，用python</p>
-<p><img src="/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_15-37-50.png" alt="Snipaste_2021-10-08_15-37-50"></p>
+<p><img src="/img/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_15-37-50.png" alt="Snipaste_2021-10-08_15-37-50"></p>
 <p>如果有返回的结果，则可以代理。</p>
 <h3 id="反弹socks5"><a href="#反弹socks5" class="headerlink" title="反弹socks5"></a>反弹socks5</h3><p>假设我们有如下环境。</p>
 <p>外网：自己的vps</p>
@@ -545,27 +545,27 @@
 <blockquote>
 <p>注意：这里两个端口不能一样，会冲突。</p>
 </blockquote>
-<p><img src="/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_13-13-08.png" alt="Snipaste_2021-10-08_13-13-08"></p>
+<p><img src="/img/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_13-13-08.png" alt="Snipaste_2021-10-08_13-13-08"></p>
 <p>然后，在win系统上使用命令</p>
 <blockquote>
 <p>.\ew_for_Win.exe -s rssocks -d vps-ip -e 23334</p>
 </blockquote>
 <p>意思为：在win服务器上启动socks5服务，然后反弹到vps上的23333端口。</p>
-<p><img src="/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_13-14-03.png" alt="Snipaste_2021-10-08_13-14-03"></p>
-<p>为了验证是否成功，在win上装了个phgstudy，开了本地web服务，然后外网python请求<img src="/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_15-56-40.png" alt="Snipaste_2021-10-08_15-56-40"></p>
-<p>请求的是127.0.0.1，然后得到了<img src="/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_13-12-44.png" alt="Snipaste_2021-10-08_13-12-44"></p>
+<p><img src="/img/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_13-14-03.png" alt="Snipaste_2021-10-08_13-14-03"></p>
+<p>为了验证是否成功，在win上装了个phgstudy，开了本地web服务，然后外网python请求<img src="/img/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_15-56-40.png" alt="Snipaste_2021-10-08_15-56-40"></p>
+<p>请求的是127.0.0.1，然后得到了<img src="/img/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_13-12-44.png" alt="Snipaste_2021-10-08_13-12-44"></p>
 <p>我们可以看到返回的是phpstudy开启web服务的首页。（成功能访问内网服务）</p>
 <h3 id="多级网络环境"><a href="#多级网络环境" class="headerlink" title="多级网络环境"></a>多级网络环境</h3><p>其实也就和上面差不多</p>
 <p>看<a target="_blank" rel="noopener" href="https://github.com/idlefire/ew/blob/master/Readme.txt">ew的介绍</a></p>
 <h3 id="用SocksCap64和ProxyChains4实现内网漫游"><a href="#用SocksCap64和ProxyChains4实现内网漫游" class="headerlink" title="用SocksCap64和ProxyChains4实现内网漫游"></a>用SocksCap64和ProxyChains4实现内网漫游</h3><p><strong>SocksCap：（win下）</strong></p>
 <p>以管理员身份打开</p>
-<p><img src="/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_16-08-47.png" alt="Snipaste_2021-10-08_16-08-47"></p>
+<p><img src="/img/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_16-08-47.png" alt="Snipaste_2021-10-08_16-08-47"></p>
 <p>会自动把浏览器导入。</p>
 <p>我们点击代理。把存在socks代理的服务器写入ip和端口。</p>
 <p>点击√，测试能不能连通。</p>
-<p><img src="/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_16-10-33.png" alt="Snipaste_2021-10-08_16-10-33"></p>
+<p><img src="/img/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_16-10-33.png" alt="Snipaste_2021-10-08_16-10-33"></p>
 <p>然后，我们就可以右击浏览器，点击“在代理隧道中运行选中程序”，我们就可以在浏览器中访问内网。</p>
-<p><img src="/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_16-14-10.png" alt="Snipaste_2021-10-08_16-14-10"></p>
+<p><img src="/img/%E5%86%85%E7%BD%91%E9%80%9A%E4%BF%A1%E9%9A%A7%E9%81%93-socks/Snipaste_2021-10-08_16-14-10.png" alt="Snipaste_2021-10-08_16-14-10"></p>
 <p>nginx为我在左边vps中开启的web服务，可以看到我访问的地址为内网地址。也就是我的vps的内网地址。</p>
 <p><strong>ProxyChains4:</strong></p>
 <p>我们先</p>

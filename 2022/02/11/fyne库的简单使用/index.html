@@ -608,10 +608,10 @@ content :&#x3D; fyne.NewContainerWithLayout(layout.NewMaxLayout(),
 <h2 id="0x02-如何搭配"><a href="#0x02-如何搭配" class="headerlink" title="0x02 如何搭配"></a>0x02 如何搭配</h2><p>我一开始也很懵逼。</p>
 <p>后来研究<a target="_blank" rel="noopener" href="https://github.com/Jacalz/wormhole-gui%EF%BC%8C%E5%8F%91%E7%8E%B0%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E4%BD%BF%E7%94%A8fyne%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E6%88%91%E4%BB%AC%E9%9C%80%E8%A6%81%E6%9E%84%E5%BB%BA%E6%AF%8F%E4%B8%80%E4%B8%AA%E5%B0%8F%E9%83%A8%E5%88%86%EF%BC%8C%E7%84%B6%E5%90%8E%E5%86%8D%E5%B0%86%E5%B0%8F%E9%83%A8%E5%88%86%E7%94%A8%E5%AE%B9%E5%99%A8%EF%BC%88container%EF%BC%89%E6%9D%A5%E5%88%92%E5%88%86%E5%8C%BA%E5%9F%9F%EF%BC%8C%E5%A6%82%E6%9E%9C%E9%9C%80%E8%A6%81%E6%9B%B4%E5%A4%8D%E6%9D%82%EF%BC%8C%E5%B0%B1%E4%B8%8D%E6%96%AD%E5%B5%8C%E5%A5%97%E5%B0%B1%E5%A5%BD%E3%80%82">https://github.com/Jacalz/wormhole-gui，发现，我们在使用fyne的时候，我们需要构建每一个小部分，然后再将小部分用容器（container）来划分区域，如果需要更复杂，就不断嵌套就好。</a></p>
 <p>比如：</p>
-<p><img src="/fyne%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/Snipaste_2022-02-11_16-29-56.png" alt="Snipaste_2022-02-11_16-29-56"></p>
+<p><img src="/img/fyne%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/Snipaste_2022-02-11_16-29-56.png" alt="Snipaste_2022-02-11_16-29-56"></p>
 <p>这个效果我们如何做出来，他是弄个了三个widget.Card</p>
-<p><img src="/fyne%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/Snipaste_2022-02-11_16-37-45.png" alt="Snipaste_2022-02-11_16-37-45"></p>
-<p><img src="/fyne%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/Snipaste_2022-02-11_16-38-33.png" alt="Snipaste_2022-02-11_16-38-33"></p>
+<p><img src="/img/fyne%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/Snipaste_2022-02-11_16-37-45.png" alt="Snipaste_2022-02-11_16-37-45"></p>
+<p><img src="/img/fyne%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/Snipaste_2022-02-11_16-38-33.png" alt="Snipaste_2022-02-11_16-38-33"></p>
 <p>Card中的Content就是每个Card中的小组件。</p>
 <p>像用户设置(User Interface)，可以直接用</p>
 <pre class="line-numbers language-none"><code class="language-none">import (
@@ -620,8 +620,8 @@ appearance &quot;fyne.io&#x2F;fyne&#x2F;v2&#x2F;cmd&#x2F;fyne_settings&#x2F;sett
 interfaceContainer :&#x3D; appearance.NewSettings().LoadAppearanceScreen(s.window)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>而Data Handling，则是使用了container.NewGridWithColumns包含两列小组件，一列Label，一列有按钮、有选择。</p>
-<p><img src="/fyne%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/Snipaste_2022-02-11_16-50-00.png" alt="Snipaste_2022-02-11_16-50-00"></p>
-<p><img src="/fyne%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/Snipaste_2022-02-11_16-50-11.png" alt="Snipaste_2022-02-11_16-50-11"></p>
+<p><img src="/img/fyne%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/Snipaste_2022-02-11_16-50-00.png" alt="Snipaste_2022-02-11_16-50-00"></p>
+<p><img src="/img/fyne%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/Snipaste_2022-02-11_16-50-11.png" alt="Snipaste_2022-02-11_16-50-11"></p>
 <p>而Wormhole Options，则是和Data Handling一样。</p>
 <p>所以我们对于这些如何进行搭配，就是套娃，先写好小部分，然后用大部分包裹小部分。</p>
 <h2 id="Referer"><a href="#Referer" class="headerlink" title="Referer"></a>Referer</h2><p><a target="_blank" rel="noopener" href="https://learnku.com/articles/43181">https://learnku.com/articles/43181</a></p>

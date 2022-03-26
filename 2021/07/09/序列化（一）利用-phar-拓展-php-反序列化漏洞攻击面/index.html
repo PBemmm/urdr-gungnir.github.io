@@ -501,7 +501,7 @@
 </li>
 <li><h5 id="a-manifest-describing-the-contents"><a href="#a-manifest-describing-the-contents" class="headerlink" title="a manifest describing the contents"></a>a <strong>manifest</strong> describing the contents</h5><p>其实phar文件本质上是一种压缩文件，其实每个被压缩文件的权限、属性信息都被放在这一部分。这部分会存储序列化过的meta-data，这时攻击利用的核心点。</p>
 <p>（拿seebug大佬的图。。。。。）</p>
-<p><img src="/%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%88%E4%B8%80%EF%BC%89%E5%88%A9%E7%94%A8-phar-%E6%8B%93%E5%B1%95-php-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%E6%94%BB%E5%87%BB%E9%9D%A2/24388aaa-6ea4-4856-8fb1-fbf29deb5dca.png" alt="24388aaa-6ea4-4856-8fb1-fbf29deb5dca"></p>
+<p><img src="/img/%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%88%E4%B8%80%EF%BC%89%E5%88%A9%E7%94%A8-phar-%E6%8B%93%E5%B1%95-php-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%E6%94%BB%E5%87%BB%E9%9D%A2/24388aaa-6ea4-4856-8fb1-fbf29deb5dca.png" alt="24388aaa-6ea4-4856-8fb1-fbf29deb5dca"></p>
 </li>
 <li><p>the file contents</p>
 <p>被压缩文件的内容</p>
@@ -534,9 +534,9 @@
 
 <p>那么序列化后，没有unserialize(),我们如何去反序列化呢？</p>
 <p>其实，php一大部分的文件系统函数在通过<strong>phar:&#x2F;&#x2F;伪协议</strong>解析phar文件时，都会将<strong>meta-data</strong>进行<strong>反序列化</strong>，由👉大佬测试后，发现受影响的函数如下：</p>
-<p><img src="/%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%88%E4%B8%80%EF%BC%89%E5%88%A9%E7%94%A8-phar-%E6%8B%93%E5%B1%95-php-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%E6%94%BB%E5%87%BB%E9%9D%A2/17c4c630-b5f7-4e02-af48-160cd8fcf73a.png" alt="17c4c630-b5f7-4e02-af48-160cd8fcf73a"></p>
+<p><img src="/img/%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%88%E4%B8%80%EF%BC%89%E5%88%A9%E7%94%A8-phar-%E6%8B%93%E5%B1%95-php-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%E6%94%BB%E5%87%BB%E9%9D%A2/17c4c630-b5f7-4e02-af48-160cd8fcf73a.png" alt="17c4c630-b5f7-4e02-af48-160cd8fcf73a"></p>
 <p>php底层是由c语言实现的，可以看一下php底层代码是如何处理的</p>
-<p><img src="/%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%88%E4%B8%80%EF%BC%89%E5%88%A9%E7%94%A8-phar-%E6%8B%93%E5%B1%95-php-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%E6%94%BB%E5%87%BB%E9%9D%A2/44a2f1dc-1c23-4638-8f6e-24fc75d68c2a.png" alt="44a2f1dc-1c23-4638-8f6e-24fc75d68c2a"></p>
+<p><img src="/img/%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%88%E4%B8%80%EF%BC%89%E5%88%A9%E7%94%A8-phar-%E6%8B%93%E5%B1%95-php-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%E6%94%BB%E5%87%BB%E9%9D%A2/44a2f1dc-1c23-4638-8f6e-24fc75d68c2a.png" alt="44a2f1dc-1c23-4638-8f6e-24fc75d68c2a"></p>
 <p>当文件系统函数的参数可控时，我们可以在不调用unserialize()的情况下进行反序列化操作，一些之前看起来“<strong>人畜无害</strong>”的函数也变得“<strong>暗藏杀机</strong>”，极大的拓展了攻击面。</p>
 <h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><p>在创建phar文件时，自己的php环境中php.ini中的phar.readonly一定要是off，如果没有设置或者为on的话，就是默认为开启的，这样就创建不了phar文件了.</p>
 <h1 id="0x03实际利用"><a href="#0x03实际利用" class="headerlink" title="0x03实际利用"></a>0x03实际利用</h1><h2 id="利用条件"><a href="#利用条件" class="headerlink" title="利用条件"></a>利用条件</h2><ol>
