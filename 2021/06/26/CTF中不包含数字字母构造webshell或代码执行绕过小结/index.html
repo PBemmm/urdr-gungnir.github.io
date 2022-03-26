@@ -1065,6 +1065,33 @@ cmd&#x3D;$_GET[1]($_GET[2]);<span aria-hidden="true" class="line-numbers-rows"><
     </div>
 
     
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '7ab50c442e998e147c59',
+        clientSecret: '6ba54841b6710e640e6b71c17e8807b8c6c026d0',
+        repo: 'urdr-gungnir.github.io',
+        owner: 'urdr-gungnir',
+        admin: "Gungnir",
+        id: '2021-06-26T22-11-39',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+
+    
 
     
 
